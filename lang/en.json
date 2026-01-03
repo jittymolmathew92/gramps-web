@@ -264,5 +264,6 @@
   "Add custom search engine": "Add custom search engine",
   "Enter a search URL with template variables for person data. Available variables:": "Enter a search URL with template variables for person data. Available variables:",
   "e.g., MyGenealogy": "e.g., MyGenealogy",
-  "Search URL": "Search URL"
+  "Search URL": "Search URL",
+  "Edit Repository": "Edit Repository"
 }

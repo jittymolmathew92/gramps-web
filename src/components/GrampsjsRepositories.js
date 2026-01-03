@@ -28,7 +28,12 @@ export class GrampsjsRepositories extends GrampsjsEditableTable {
         <td>${this._(obj.media_type)}</td>
         <td>
           ${this.edit
-            ? this._renderActionBtns(obj.ref, i === 0, i === arr.length - 1)
+            ? this._renderActionBtns(
+                obj.ref,
+                i === 0,
+                i === arr.length - 1,
+                obj.ref
+              )
             : ''}
         </td>
       </tr>
@@ -66,6 +71,35 @@ export class GrampsjsRepositories extends GrampsjsEditableTable {
     if (e.detail.data.ref) {
       fireEvent(this, 'edit:action', {
         action: 'addRepoRef',
+        data: e.detail.data,
+      })
+    }
+    e.preventDefault()
+    e.stopPropagation()
+    this.dialogContent = ''
+  }
+
+  _handleEditClick(obj) {
+    this.dialogContent = html`
+      <grampsjs-form-reporef
+        new
+        @object:save="${this._handleRepoRefEdit}"
+        @object:cancel="${this._handleRepoRefCancel}"
+        .appState="${this.appState}"
+        .objRef="${obj}"
+        .formData="${this.data}"
+        .formExtended="${this.extended}"
+        dialogTitle=${this._('Edit Repository')}
+      >
+      </grampsjs-form-reporef>
+    `
+  }
+
+  _handleRepoRefEdit(e) {
+    console.log('jitty edit', e.detail.data)
+    if (e.detail.data.ref) {
+      fireEvent(this, 'edit:action', {
+        action: 'editRepoRef',
         data: e.detail.data,
       })
     }
