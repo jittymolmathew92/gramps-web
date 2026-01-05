@@ -61,6 +61,7 @@ export class GrampsjsRepositories extends GrampsjsEditableTable {
         @object:cancel="${this._handleRepoRefCancel}"
         .appState="${this.appState}"
         objType="${this.objType}"
+        action="add"
         dialogTitle=${this._('Add an existing repository')}
       >
       </grampsjs-form-reporef>
@@ -89,6 +90,7 @@ export class GrampsjsRepositories extends GrampsjsEditableTable {
         .objRef="${obj}"
         .formData="${this.data}"
         .formExtended="${this.extended}"
+        action="edit"
         dialogTitle=${this._('Edit Repository')}
       >
       </grampsjs-form-reporef>
@@ -96,10 +98,9 @@ export class GrampsjsRepositories extends GrampsjsEditableTable {
   }
 
   _handleRepoRefEdit(e) {
-    console.log('jitty edit', e.detail.data)
     if (e.detail.data.ref) {
       fireEvent(this, 'edit:action', {
-        action: 'editRepoRef',
+        action: 'updateRepoRef',
         data: e.detail.data,
       })
     }

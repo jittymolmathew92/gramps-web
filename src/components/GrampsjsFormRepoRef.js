@@ -14,14 +14,27 @@ import './GrampsjsFormString.js'
 import {GrampsjsObjectForm} from './GrampsjsObjectForm.js'
 
 class GrampsjsFormRepoRef extends GrampsjsObjectForm {
+  static get properties() {
+    return {
+      objType: {type: String},
+      action: {type: String},
+      formData: {type: Array},
+      formExtended: {type: Array},
+      objRef: {type: String},
+    }
+  }
+
   renderForm() {
     let result = []
-    let selectOpt = []
+    const selectOption = []
     if (this.objRef && this.formData.length && this.formExtended.length) {
       result = this.formData?.find(({ref}) => ref === this.objRef)
-      console.log('jit1 result', result)
-      selectOpt = this.formExtended?.find(({handle}) => handle === this.objRef)
-      console.log('jit1 selectOpt', selectOpt)
+      selectOption.push({
+        handle: this.objRef,
+        object:
+          this.formExtended?.find(({handle}) => handle === this.objRef) || [],
+        object_type: 'repository',
+      })
     }
     return html`
       <grampsjs-form-select-object-list
@@ -31,8 +44,10 @@ class GrampsjsFormRepoRef extends GrampsjsObjectForm {
         .appState="${this.appState}"
         id="repository-select"
         label="${this._('Select')}"
-        .objectsInitial="${selectOpt}"
+        .objectsInitial="${selectOption}"
         class="edit"
+        .action="${this.action}"
+        .notDeletable="${this.action === 'edit'}"
       ></grampsjs-form-select-object-list>
 
       <h4 class="label">${this._('Call Number')}</h4>
