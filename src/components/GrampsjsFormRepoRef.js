@@ -14,7 +14,28 @@ import './GrampsjsFormString.js'
 import {GrampsjsObjectForm} from './GrampsjsObjectForm.js'
 
 class GrampsjsFormRepoRef extends GrampsjsObjectForm {
+  static get properties() {
+    return {
+      objType: {type: String},
+      action: {type: String},
+      formData: {type: Array},
+      formExtended: {type: Array},
+      objRef: {type: String},
+    }
+  }
+
   renderForm() {
+    let result = []
+    const selectOption = []
+    if (this.objRef && this.formData.length && this.formExtended.length) {
+      result = this.formData?.find(({ref}) => ref === this.objRef)
+      selectOption.push({
+        handle: this.objRef,
+        object:
+          this.formExtended?.find(({handle}) => handle === this.objRef) || [],
+        object_type: 'repository',
+      })
+    }
     return html`
       <grampsjs-form-select-object-list
         fixedMenuPosition
@@ -23,7 +44,10 @@ class GrampsjsFormRepoRef extends GrampsjsObjectForm {
         .appState="${this.appState}"
         id="repository-select"
         label="${this._('Select')}"
+        .objectsInitial="${selectOption}"
         class="edit"
+        .action="${this.action}"
+        .notDeletable="${this.action === 'edit'}"
       ></grampsjs-form-select-object-list>
 
       <h4 class="label">${this._('Call Number')}</h4>
@@ -31,7 +55,7 @@ class GrampsjsFormRepoRef extends GrampsjsObjectForm {
         <grampsjs-form-string
           fullwidth
           id="call_number"
-          value="${this.data.call_number}"
+          value="${this.data.call_number || result?.call_number}"
         ></grampsjs-form-string>
       </p>
 
@@ -44,6 +68,7 @@ class GrampsjsFormRepoRef extends GrampsjsObjectForm {
         ?loadingTypes=${this.loadingTypes}
         defaultValue="Book"
         .types="${this.types}"
+        .value="${result.media_type}"
         .typesLocale="${this.typesLocale}"
       >
       </grampsjs-form-select-type>
