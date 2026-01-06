@@ -72,7 +72,7 @@ class GrampsjsFormSelectObjectList extends GrampsjsAppStateMixin(LitElement) {
     )
     if (this.objectsInitial.length > 0) {
       objList.objects = this.objectsInitial
-      objSelect.objects = this.objectsInitial
+      if (objSelect) objSelect.objects = this?.objectsInitial
       this.objectsInitial.map((obj, i) => this._fetchObjectIfNeeded(obj, i))
     }
   }
